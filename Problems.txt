@@ -1,0 +1,76 @@
+1、连接模拟器
+首先打开模拟器，我用的mumu，打开后运行cmd，执行连接命令——adb connect 127.0.0.1:7555，不同的模拟器只是端口号不同，具体端口可百度。
+接着在项目代码的package.json里运行“scripts”的“android”，等待运行完就可以在模拟器上看到。
+
+2、连接真机
+首先用数据线连接手机，然后打开手机的开发者模式，可在cmd命令行中使用adb devices命令查看连接上的设备。
+我的手机是VIVO，打开设置-更多设置-关于手机，在软件版本号一栏点击7次就打开了，回到更多设置，底部就有开发者选项，进入打开USE调试
+然后在项目代码的package.json里运行“scripts”的“start”，紧接着在编译器(webStorm)下面的Terminal一栏输入 react-native run-android 命令。
+最后就会如同在模拟器上一样调试。
+
+3、路由传参
+可以使用 useNavigation() hooks
+a页面：
+navigation.navigate('b', {
+     data: xxxxx,
+});
+也可以使用props：props.navigation.navigate('b');
+b页面：
+const data = props.route.params.data;
+
+4、返回上一个页面后刷新数据（从a进入b，然后从b返回a后，刷新a的数据）
+在进入下一个页面的时候通过路由参数传入一个方法refresh，在下一个页面将要返回的时候调用路由里的这个方法即可。
+a页面：
+navigation.navigate('b', {
+     data: xxxx,
+     refresh: () => {
+          // 刷新数据操作方法
+     }
+});
+b页面：
+navigation.goBack('a');
+props.route.params.refresh();
+
+5、修改App名称
+android\app\src\main\res\values\strings.xml
+
+6、横竖屏切换时原本竖屏布局完好，但是横屏就会乱。
+
+7、用.js格式写JSX时会大面积标红。
+File–>settings–>Languages & Frameworks–>JavaScript–>React JSX
+
+8、Text标签不会继承字体大小、颜色等等属性，需要在Text标签上修改。
+
+10、React Navigation的TabNavigator如何在各个tabs中自动切换？
+stackNavigatuion和TabNavigator都是共用一套机制，包括 页面跳转，页面配置，action，状态管理等等，所以跳转方法也是和stack一样。
+
+11、TabNavigator在tabs中互相切换的时候不会触发每个组件的useEffect。
+可以使用：
+import {useFocusEffect} from '@react-navigation/native'; 
+useFocusEffect(
+	React.useCallback(() => {
+		getData();
+    }, [关联]),
+);
+
+12、在开发真机上可以联网访问后端，但是换一个手机就不行了。
+网上给的答案是安卓9之后使用网络需要添加一个xml配置。
+详情：https://blog.csdn.net/qq_36538734/article/details/90476288
+
+13、某些页面，比如登录后跳转到主页后物理返回键不能返回到登录页面。
+import {StackActions, useNavigation} from '@react-navigation/native';
+const navigation = useNavigation();
+navigation.dispatch(
+    StackActions.replace('Login')
+);
+
+14、ScrollView标签上使用 flex 布局会失效。
+
+15、使用 react-native-image-picker 上传文件、图片时需要对参数进行formData化。
+图片：
+
+
+
+
+
+
