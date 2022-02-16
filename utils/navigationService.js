@@ -1,7 +1,25 @@
-import React from "react";
+import {CommonAction, StackActions} from "@react-navigation/native";
 
-export const navigationRef = React.createRef();
+let navigator;
+export function setTopLevelNavigator(navigatorRef) {
+  navigator = navigatorRef;
+}
 
-export function navigate(name, params) {
-  navigationRef.current?.navigate(name, params);
+function navigate(name, params) {
+  navigator.dispatch(
+      CommonActions.navigate({
+        name,
+        params
+      })
+  )
+}
+
+export function redirectTo(routeName) {
+  navigator.dispatch(StackActions.replace(routeName))
+}
+
+export default {
+  navigate,
+  redirectTo,
+  setTopLevelNavigator,
 }

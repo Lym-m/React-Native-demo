@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {setTopLevelNavigator} from "./utils/navigationService";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Code from './src/forgetPassword/code';
@@ -49,7 +50,9 @@ const Home = props => {
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigatorRef => {
+      setTopLevelNavigator(navigatorRef);
+    }}>
       <Stack.Navigator initialRouteName="Home" headerMode="none">
         <Stack.Screen name="登录" component={Home} />
         <Stack.Screen name="获取验证码" component={Code} />
