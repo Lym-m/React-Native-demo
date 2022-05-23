@@ -1,15 +1,17 @@
 import {Button, Dimensions, SafeAreaView, StyleSheet, Text, TextInput} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import HttpUtils from '../utils/myFetch';
 import Toast from '../components/Toast';
 import storage from "../utils/storage";
 import {useNavigation, StackActions} from '@react-navigation/native';
+import {ThemeContext} from '../App';
 
 const Login = props => {
   const navigation = useNavigation();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [btnDisabled, setBtnDisabled] = useState(true);
+  const {theme} = useContext(ThemeContext);
 
   useEffect(() => {
     if (phone.length === 11 && password.length > 4) {
@@ -66,8 +68,11 @@ const Login = props => {
           borderBottomColor: 'grey',
           borderBottomWidth: 1,
           marginBottom: 30,
+          color: theme.color,
+          borderColor: theme.borderColor,
         }}
         placeholder="手机号"
+        placeholderTextColor={theme.placeholderTextColor}
         onChangeText={text => setPhone(text)}
         value={phone}
         maxLength={11}
@@ -79,8 +84,11 @@ const Login = props => {
           borderBottomColor: 'grey',
           borderBottomWidth: 1,
           marginBottom: 30,
+          color: theme.color,
+          borderColor: theme.borderColor,
         }}
         placeholder="密码"
+        placeholderTextColor={theme.placeholderTextColor}
         onChangeText={text => setPassword(text)}
         value={password}
         secureTextEntry={true}
